@@ -1,15 +1,34 @@
-package Testing;
+package testing;
 
-import Main.BitSet;
+import main.BitSet;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestOfBitSet {
+
+    @Test
+    public void consCheck() {
+        ArrayList<Integer> arrayList = new ArrayList(Arrays.asList(1, 2, 3, 4));
+        BitSet<Integer> testBitSet = new BitSet(arrayList);
+        assertEquals(Arrays.asList(1, 2, 3, 4), testBitSet.getElements());
+    }
+    @Test
+    public void throCheck() {
+        ArrayList<Integer> arrayList = new ArrayList(Arrays.asList(1, 2, 3, 4));
+        BitSet<Integer> testBitSet = new BitSet(arrayList);
+        assertThrows(IllegalArgumentException.class, () -> {
+            testBitSet.add(1);
+        });
+        testBitSet.remove(4);
+        testBitSet.add(5);
+        assertEquals(
+                Arrays.asList(1, 2, 3, 5), testBitSet.getElements()
+        );
+    }
     @Test
     public void testAdd() {
         BitSet<Integer> testBitSet = new BitSet(3);
@@ -17,7 +36,10 @@ public class TestOfBitSet {
         testBitSet.add(0);
         testBitSet.add(-5);
         assertEquals(Arrays.asList(12, 0, -5), testBitSet.getElements());
-        testBitSet.add(0);
+        assertThrows(IllegalArgumentException.class, () -> {
+            testBitSet.add(0);
+                }
+        );
         assertEquals(Arrays.asList(12, 0, -5), testBitSet.getElements());
     }
 
@@ -38,8 +60,10 @@ public class TestOfBitSet {
         testBitSet1.addAll(new String[] {"aa", "bb", "cc", "dd", "ee", "ff", "gg", "56"});
         BitSet<String> testBitSet2 = new BitSet(3);
         testBitSet2.addAll(new String[] {"bb", "aa", "55"});
-        testBitSet1.intersectionWith(testBitSet2);
-        assertEquals(Arrays.asList("aa", "bb"), testBitSet1.getElements());
+        assertEquals(
+                Arrays.asList("aa", "bb"),
+                testBitSet1.intersectionWith(testBitSet2).getElements()
+        );
     }
 
     @Test
@@ -50,7 +74,8 @@ public class TestOfBitSet {
         testBitSet2.addAll(new String[] {"bb", "aa", "55"});
         testBitSet1.unificationWith(testBitSet2);
         assertEquals(
-                Arrays.asList("aa", "bb", "cc", "dd", "ee", "ff", "gg", "56", "55"), testBitSet1.getElements()
+                Arrays.asList("aa", "bb", "cc", "dd", "ee", "ff", "gg", "56", "55"),
+                testBitSet1.unificationWith(testBitSet2).getElements()
         );
     }
 
