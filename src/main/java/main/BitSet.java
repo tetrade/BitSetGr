@@ -2,12 +2,14 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
-public class BitSet<T> {
+public class BitSet<T> implements Iterable<T> {
     private int currentCountOfElements;
     private int countOfElements;
     private ArrayList<T> elements;
+
 
     public BitSet(int countOfElements) {
         currentCountOfElements = 0;
@@ -21,6 +23,9 @@ public class BitSet<T> {
         countOfElements = arrayList.size();
     }
 
+    public Iterator<T> iterator() {
+        return new BitSetIterator<T>(this);
+    }
 
     public void add(T element){
         if (currentCountOfElements + 1 > countOfElements) {
@@ -84,5 +89,9 @@ public class BitSet<T> {
 
     public ArrayList<T> getElements() {
         return elements;
+    }
+
+    public int getCountOfElements() {
+        return countOfElements;
     }
 }
